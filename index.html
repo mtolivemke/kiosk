@@ -20,7 +20,7 @@
       text-transform: uppercase;
     }
     
-    /* VIEWPORT HARD LOCKDOWN: Locks layout wrapper structure to absolute dimensions */
+    /* HARD LAYOUT BOUNDARY LOCKDOWN */
     html, body {
       width: 100vw;
       height: 100vh;
@@ -29,6 +29,7 @@
       top: 0 !important;
       left: 0 !important;
       overscroll-behavior: none !important;
+      overscroll-behavior-x: none !important;
       overscroll-behavior-y: none !important;
     }
     
@@ -203,21 +204,19 @@
     </a>
   </main>
 
-  <!-- Fully Kiosk Integration & Touch Lockdown Script -->
+  <!-- Fully Kiosk Integration & Absolute Touch Lockdown Script -->
   <script>
     let idleTimeout;
 
-    // Direct touch gesture cancellation for any vertical swipe pattern
+    // TOTAL GESTURE MUTING: Strips down all touch drag momentum events globally on the screen window
+    window.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
     window.addEventListener('touchstart', (e) => {
-      // Allow single tap inputs but prevent movement chains on main canvas layout
       if (e.touches.length > 1) {
         e.preventDefault();
       }
-    }, { passive: false });
-
-    window.addEventListener('touchmove', (e) => {
-      // Completely block any canvas tracking scrolling updates globally
-      e.preventDefault();
     }, { passive: false });
 
     function resetIdleTimer() {
@@ -229,6 +228,7 @@
       }, 60000);
     }
 
+    // INTERCEPT: If the app forces the screensaver open on this page, immediately close it
     function handleScreensaverStart() {
       if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
         fully.stopScreensaver();
