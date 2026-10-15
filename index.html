@@ -200,7 +200,7 @@
 
     function resetIdleTimer() {
       clearTimeout(idleTimeout);
-      // Wait exactly 60 seconds (60000ms) of overall inactivity before forcing a reload
+      // Force-reload the start URL page after exactly 60 seconds (60000ms) of overall idle time
       idleTimeout = setTimeout(() => {
         if (typeof fully !== 'undefined' && typeof fully.loadStartUrl === 'function') {
           fully.loadStartUrl();
@@ -208,21 +208,24 @@
       }, 60000);
     }
 
-    function initKioskControl() {
-      if (typeof fully !== 'undefined' && typeof fully.setScreensaverTimer === 'function') {
-        // Turn off screensaver functionality specifically on this homepage view
-        fully.setScreensaverTimer(0);
+    // INTERCEPT: If the app forces the screensaver open on this page, immediately close it
+    function handleScreensaverStart() {
+      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+        fully.stopScreensaver();
       }
-      
-      // Start monitoring the screen for human activity right away
-      resetIdleTimer();
-      
-      // Reset the 60-second timer if someone taps anywhere on the screen
-      window.addEventListener('click', resetIdleTimer);
-      window.addEventListener('touchstart', resetIdleTimer);
     }
 
-    // Initialize immediately if fully is ready, or wait for the system to hook in
+    function initKioskControl() {
+      // Monitor user touches to refresh our background countdown timer
+      resetIdleTimer();
+      window.addEventListener('click', resetIdleTimer);
+      window.addEventListener('touchstart', resetIdleTimer);
+
+      // Bind the native Fully Kiosk screensaver interception function
+      window.onFullyScreensaverStart = handleScreensaverStart;
+    }
+
+    // Initialize immediately or wait for the native app bridge to bind
     if (typeof fully !== 'undefined') {
       initKioskControl();
     } else {
