@@ -31,7 +31,6 @@
       padding-bottom: 32px;
       overflow: hidden;
       position: relative;
-      /* PREVENT STRETCHING: Completely disables pull-to-refresh and top/bottom overscroll bounce */
       overscroll-behavior-y: none; 
     }
     
@@ -196,13 +195,30 @@
     </a>
   </main>
 
-  <!-- Fully Kiosk Integration Script -->
+  <!-- Fully Kiosk Integration & Touch Lockdown Script -->
   <script>
     let idleTimeout;
+    let touchStartY = 0;
+
+    // HARD LOCKDOWN: Intercept touch drag patterns to kill native browser vertical stretching 
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      const touchY = e.touches[0].clientY;
+      const touchMoveDelta = touchY - touchStartY;
+
+      // If dragging downward from top of document, completely block the gesture movement
+      if (document.documentElement.scrollTop === 0 && touchMoveDelta > 0) {
+        e.preventDefault();
+      }
+    }, { passive: false });
 
     function resetIdleTimer() {
       clearTimeout(idleTimeout);
-      // Force-reload the start URL page after exactly 60 seconds (60000ms) of overall idle time
       idleTimeout = setTimeout(() => {
         if (typeof fully !== 'undefined' && typeof fully.loadStartUrl === 'function') {
           fully.loadStartUrl();
@@ -210,7 +226,6 @@
       }, 60000);
     }
 
-    // INTERCEPT: If the app forces the screensaver open on this page, immediately close it
     function handleScreensaverStart() {
       if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
         fully.stopScreensaver();
@@ -218,16 +233,13 @@
     }
 
     function initKioskControl() {
-      // Monitor user touches to refresh our background countdown timer
       resetIdleTimer();
       window.addEventListener('click', resetIdleTimer);
       window.addEventListener('touchstart', resetIdleTimer);
 
-      // Bind the native Fully Kiosk screensaver interception function
       window.onFullyScreensaverStart = handleScreensaverStart;
     }
 
-    // Initialize immediately or wait for the native app bridge to bind
     if (typeof fully !== 'undefined') {
       initKioskControl();
     } else {
