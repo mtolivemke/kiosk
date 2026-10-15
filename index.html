@@ -184,29 +184,29 @@
   
   <main class="grid-container">
     <!-- Row 1: Full-Width Primary Callout -->
-    <a href="https://churchcenter.com" class="kiosk-btn btn-large">
+    <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-large">
       <span>SIGN UP</span>
       <div class="btn-subtext">FOR EVENTS</div>
     </a>
     
     <!-- Row 2: Two Columns -->
-    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
+    <a href="https://mtolivemke.churchcenter.com/people/forms/1306171" class="kiosk-btn btn-standard">
       <span>NEW HERE?</span>
     </a>
     
-    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
+    <a href="https://mtolivemke.churchcenter.com/me/profile-and-household" class="kiosk-btn btn-standard">
       <span>UPDATE PROFILE</span>
     </a>
     
     <!-- Row 3: Hollow, Scaled-Down Bottom Anchor Button -->
-    <a href="https://churchcenter.com" class="kiosk-btn btn-utility btn-hollow">
+    <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-utility btn-hollow">
       <span>MORE ON CHURCH CENTER</span>
     </a>
   </main>
 
-  <!-- Fully Kiosk Integration & Absolute Lockdown Script -->
+  <!-- Clean UI Touch Lockdown Script -->
   <script>
-    // HARD GESTURE LOCKDOWN: Keeps layout 100% rigid against finger drags
+    // TOTAL GESTURE MUTING: Stops screen stretching/bouncing entirely
     window.addEventListener('touchmove', (e) => {
       e.preventDefault();
     }, { passive: false });
@@ -216,22 +216,6 @@
         e.preventDefault();
       }
     }, { passive: false });
-
-    // CUSTOMER SERVICE TIMEOUT FIX: Applies a short 250ms delay so Fully Kiosk can complete its reload cycle before clearing the screensaver
-    function dismissScreensaverOnLoad() {
-      setTimeout(() => {
-        if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
-          fully.stopScreensaver();
-        }
-      }, 250);
-    }
-
-    // Run the execution check when ready or bind to the initialization hook
-    if (typeof fully !== 'undefined') {
-      dismissScreensaverOnLoad();
-    } else {
-      window.addEventListener('onFullyStarted', dismissScreensaverOnLoad);
-    }
   </script>
 
 </body>
