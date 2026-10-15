@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>KIOSK</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-user-select: none;
+      user-select: none;
+      text-transform: uppercase;
+    }
+    
+    body {
+      background-color: #164734;
+      color: #f8f6e1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-bottom: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Header Branding */
+    .header {
+      width: 100%;
+      margin-bottom: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    
+    .brand-header-banner {
+      width: 100vw;
+      height: 69.3vh;
+      min-height: 200px;
+      max-height: 693px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 0;
+      display: block;
+    }
+    
+    .header-logo-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+      height: 85%;
+      max-height: 519px;
+      object-fit: contain;
+      z-index: 2;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.4));
+    }
+    
+    .header::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(to bottom, rgba(22,71,52,0) 0, #164734 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    /* Button Grid Container */
+    .grid-container {
+      width: 100%;
+      max-width: 900px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    
+    /* Main Kiosk Action Buttons */
+    .kiosk-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f6e1;
+      border: 6px solid #f8f6e1;
+      color: #164734;
+      text-decoration: none;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color .35s, transform .35s, box-shadow .35s;
+      text-align: center;
+      box-shadow: 0 16px 32px rgba(0,0,0,.4);
+      position: relative;
+      top: 0;
+      padding: 12px;
+    }
+    
+    .kiosk-btn:active {
+      background-color: #e0ded0;
+      border-color: #e0ded0;
+      transform: translateY(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+    }
+    
+    .btn-large {
+      grid-column: span 2;
+      height: 190px;
+      font-size: 3.8rem;
+      letter-spacing: 1px;
+    }
+    
+    .btn-standard {
+      height: 160px;
+      font-size: 2.7rem;
+      letter-spacing: 1px;
+    }
+    
+    .btn-subtext {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 4px;
+      letter-spacing: 1px;
+      color: #164734;
+      line-height: 1.1;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <img src="header-bg.png" alt="" class="brand-header-banner">
+    <img src="logo.svg" alt="LOGO" class="header-logo-overlay">
+  </header>
+  
+  <main class="grid-container">
+    <!-- Row 1: Full-Width Callout -->
+    <a href="https://mtolivemke.churchcenter.com/people/forms/1306171" class="kiosk-btn btn-large">
+      <span>NEW HERE?</span>
+      <div class="btn-subtext">CONNECT WITH US</div>
+    </a>
+    
+    <!-- Row 2: Two Columns -->
+    <a href="intent:#Intent;launchFlags=0x10000000;component=com.ministrycentered.checkins/com.ministrycentered.checkins.CheckInsActivity;end" class="kiosk-btn btn-standard">
+      <span>CHECK IN</span>
+      <div class="btn-subtext">TO WORSHIP</div>
+    </a>
+    
+    <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-standard">
+      <span>SIGN UP</span>
+      <div class="btn-subtext">FOR EVENTS</div>
+    </a>
+    
+    <!-- Row 3: Two Columns -->
+    <a href="https://mtolivemke.churchcenter.com/me/profile-and-household" class="kiosk-btn btn-standard">
+      <span>UPDATE PROFILE</span>
+    </a>
+    
+    <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-standard">
+      <span>CHURCH CENTER</span>
+    </a>
+  </main>
+
+</body>
+</html>
