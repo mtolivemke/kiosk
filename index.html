@@ -204,11 +204,11 @@
     </a>
   </main>
 
-  <!-- Fully Kiosk Integration & Absolute Lockdown Script -->
+  <!-- Proactive Kiosk Idle Reset Script -->
   <script>
     let idleTimeout;
 
-    // TOTAL GESTURE MUTING: Strips down all touch drag momentum events globally on the screen window
+    // TOTAL GESTURE MUTING: Prevents scrolling/stretching completely
     window.addEventListener('touchmove', (e) => {
       e.preventDefault();
     }, { passive: false });
@@ -221,32 +221,20 @@
 
     function resetIdleTimer() {
       clearTimeout(idleTimeout);
-      // Force-reload the start URL page after exactly 60 seconds (60000ms) of overall idle time
+      // Refresh the page at 44 seconds (44000ms) to beat the app settings timer to the punch
       idleTimeout = setTimeout(() => {
         if (typeof fully !== 'undefined' && typeof fully.loadStartUrl === 'function') {
           fully.loadStartUrl();
+        } else {
+          window.location.reload();
         }
-      }, 60000);
+      }, 44000);
     }
 
-    // BROADCAST CAPTURE: Listens to the core document stream and drops the screensaver instantly if it triggers on this page
-    document.addEventListener('fully.screensaverStart', () => {
-      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
-        fully.stopScreensaver();
-      }
-    });
-
-    function initKioskControl() {
-      resetIdleTimer();
-      window.addEventListener('click', resetIdleTimer);
-      window.addEventListener('touchstart', resetIdleTimer);
-    }
-
-    if (typeof fully !== 'undefined') {
-      initKioskControl();
-    } else {
-      window.addEventListener('onFullyStarted', initKioskControl);
-    }
+    // Monitor screen interaction loops
+    resetIdleTimer();
+    window.addEventListener('click', resetIdleTimer);
+    window.addEventListener('touchstart', resetIdleTimer);
   </script>
 
 </body>
