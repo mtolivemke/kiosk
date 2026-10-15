@@ -204,11 +204,9 @@
     </a>
   </main>
 
-  <!-- Proactive Kiosk Idle Reset Script -->
+  <!-- Fully Kiosk Integration & Absolute Lockdown Script -->
   <script>
-    let idleTimeout;
-
-    // TOTAL GESTURE MUTING: Prevents scrolling/stretching completely
+    // HARD GESTURE LOCKDOWN: Keeps layout 100% rigid against finger drags
     window.addEventListener('touchmove', (e) => {
       e.preventDefault();
     }, { passive: false });
@@ -219,22 +217,19 @@
       }
     }, { passive: false });
 
-    function resetIdleTimer() {
-      clearTimeout(idleTimeout);
-      // Refresh the page at 44 seconds (44000ms) to beat the app settings timer to the punch
-      idleTimeout = setTimeout(() => {
-        if (typeof fully !== 'undefined' && typeof fully.loadStartUrl === 'function') {
-          fully.loadStartUrl();
-        } else {
-          window.location.reload();
-        }
-      }, 44000);
+    // CUSTOMER SERVICE FIX: Forcefully drop the screensaver banner immediately on loading
+    function dismissScreensaverOnLoad() {
+      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+        fully.stopScreensaver();
+      }
     }
 
-    // Monitor screen interaction loops
-    resetIdleTimer();
-    window.addEventListener('click', resetIdleTimer);
-    window.addEventListener('touchstart', resetIdleTimer);
+    // Run the execution check right away or wait for hardware bridge assignment
+    if (typeof fully !== 'undefined') {
+      dismissScreensaverOnLoad();
+    } else {
+      window.addEventListener('onFullyStarted', dismissScreensaverOnLoad);
+    }
   </script>
 
 </body>
