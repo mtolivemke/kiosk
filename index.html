@@ -204,7 +204,7 @@
     </a>
   </main>
 
-  <!-- Fully Kiosk Integration & Absolute Touch Lockdown Script -->
+  <!-- Fully Kiosk Integration & Absolute Lockdown Script -->
   <script>
     let idleTimeout;
 
@@ -221,6 +221,7 @@
 
     function resetIdleTimer() {
       clearTimeout(idleTimeout);
+      // Force-reload the start URL page after exactly 60 seconds (60000ms) of overall idle time
       idleTimeout = setTimeout(() => {
         if (typeof fully !== 'undefined' && typeof fully.loadStartUrl === 'function') {
           fully.loadStartUrl();
@@ -228,19 +229,17 @@
       }, 60000);
     }
 
-    // INTERCEPT: If the app forces the screensaver open on this page, immediately close it
-    function handleScreensaverStart() {
+    // BROADCAST CAPTURE: Listens to the core document stream and drops the screensaver instantly if it triggers on this page
+    document.addEventListener('fully.screensaverStart', () => {
       if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
         fully.stopScreensaver();
       }
-    }
+    });
 
     function initKioskControl() {
       resetIdleTimer();
       window.addEventListener('click', resetIdleTimer);
       window.addEventListener('touchstart', resetIdleTimer);
-
-      window.onFullyScreensaverStart = handleScreensaverStart;
     }
 
     if (typeof fully !== 'undefined') {
