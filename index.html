@@ -174,36 +174,60 @@
   
   <main class="grid-container">
     <!-- Row 1: Full-Width Primary Callout -->
-    <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-large">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-large">
       <span>SIGN UP</span>
       <div class="btn-subtext">FOR EVENTS</div>
     </a>
     
     <!-- Row 2: Two Columns -->
-    <a href="https://mtolivemke.churchcenter.com/people/forms/1306171" class="kiosk-btn btn-standard">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
       <span>NEW HERE?</span>
     </a>
     
-    <a href="https://mtolivemke.churchcenter.com/me/profile-and-household" class="kiosk-btn btn-standard">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
       <span>UPDATE PROFILE</span>
     </a>
     
     <!-- Row 3: Hollow, Scaled-Down Bottom Anchor Button -->
-    <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-utility btn-hollow">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-utility btn-hollow">
       <span>MORE ON CHURCH CENTER</span>
     </a>
   </main>
 
   <!-- Fully Kiosk Integration Script -->
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      // Wait exactly 60 seconds (60000ms) of page idle time, then force-reload the homepage start URL
-      setTimeout(() => {
+    let idleTimeout;
+
+    function resetIdleTimer() {
+      clearTimeout(idleTimeout);
+      // Wait exactly 60 seconds (60000ms) of overall inactivity before forcing a reload
+      idleTimeout = setTimeout(() => {
         if (typeof fully !== 'undefined' && typeof fully.loadStartUrl === 'function') {
           fully.loadStartUrl();
         }
       }, 60000);
-    });
+    }
+
+    function initKioskControl() {
+      if (typeof fully !== 'undefined' && typeof fully.setScreensaverTimer === 'function') {
+        // Turn off screensaver functionality specifically on this homepage view
+        fully.setScreensaverTimer(0);
+      }
+      
+      // Start monitoring the screen for human activity right away
+      resetIdleTimer();
+      
+      // Reset the 60-second timer if someone taps anywhere on the screen
+      window.addEventListener('click', resetIdleTimer);
+      window.addEventListener('touchstart', resetIdleTimer);
+    }
+
+    // Initialize immediately if fully is ready, or wait for the system to hook in
+    if (typeof fully !== 'undefined') {
+      initKioskControl();
+    } else {
+      window.addEventListener('onFullyStarted', initKioskControl);
+    }
   </script>
 
 </body>
