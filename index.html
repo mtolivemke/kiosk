@@ -36,7 +36,7 @@
     /* Header Branding */
     .header {
       width: 100%;
-      margin-bottom: 65px; /* Increased from 35px to lower the buttons grid slightly */
+      margin-bottom: 65px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -118,10 +118,10 @@
       box-shadow: 0 4px 12px rgba(0,0,0,.2);
     }
     
-    /* Main Top Callout Button style */
+    /* Top Callout Button height matches standard middle row buttons */
     .btn-large {
       grid-column: span 2;
-      height: 190px;
+      height: 160px;
       font-size: 3.8rem;
       letter-spacing: 1px;
     }
@@ -153,6 +153,16 @@
       background-color: rgba(248, 246, 225, 0.15) !important;
       transform: translateY(4px);
     }
+    
+    /* Smaller nested row styling */
+    .btn-subtext {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 4px;
+      letter-spacing: 1px;
+      color: #164734;
+      line-height: 1.1;
+    }
   </style>
 </head>
 <body>
@@ -164,21 +174,22 @@
   
   <main class="grid-container">
     <!-- Row 1: Full-Width Primary Callout -->
-    <a href="https://churchcenter.com" class="kiosk-btn btn-large">
-      <span>EVENT SIGNUPS</span>
+    <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-large">
+      <span>SIGN UP</span>
+      <div class="btn-subtext">FOR EVENTS</div>
     </a>
     
     <!-- Row 2: Two Columns -->
-    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
+    <a href="https://mtolivemke.churchcenter.com/people/forms/130617" class="kiosk-btn btn-standard">
       <span>NEW HERE?</span>
     </a>
     
-    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
+    <a href="https://mtolivemke.churchcenter.com/me/profile-and-household" class="kiosk-btn btn-standard">
       <span>UPDATE PROFILE</span>
     </a>
     
     <!-- Row 3: Hollow, Scaled-Down Bottom Anchor Button -->
-    <a href="https://churchcenter.com" class="kiosk-btn btn-utility btn-hollow">
+    <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-utility btn-hollow">
       <span>MORE ON CHURCH CENTER</span>
     </a>
   </main>
