@@ -79,7 +79,7 @@
       z-index: 1;
     }
     
-    /* Button Grid Container */
+    /* 2-Column Grid Container */
     .grid-container {
       width: 100%;
       max-width: 900px;
@@ -103,7 +103,7 @@
       border-radius: 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: background-color .35s, transform .35s, box-shadow .35s;
+      transition: background-color .35s, transform .35s, box-shadow .35s, border-color .35s, color .35s;
       text-align: center;
       box-shadow: 0 16px 32px rgba(0,0,0,.4);
       position: relative;
@@ -118,6 +118,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,.2);
     }
     
+    /* Main Top Callout Button style */
     .btn-large {
       grid-column: span 2;
       height: 190px;
@@ -125,19 +126,32 @@
       letter-spacing: 1px;
     }
     
+    /* Middle Row Side-by-Side Button style */
     .btn-standard {
       height: 160px;
       font-size: 2.7rem;
       letter-spacing: 1px;
     }
     
-    .btn-subtext {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-top: 4px;
+    /* Small bottom-row utility button style */
+    .btn-utility {
+      grid-column: span 2;
+      height: 90px;
+      font-size: 1.9rem;
       letter-spacing: 1px;
-      color: #164734;
-      line-height: 1.1;
+      box-shadow: 0 10px 20px rgba(0,0,0,.3);
+    }
+    
+    /* Hollow Button Style Override */
+    .btn-hollow {
+      background-color: transparent !important;
+      border: 3px solid #f8f6e1 !important;
+      color: #f8f6e1 !important;
+      box-shadow: none !important;
+    }
+    .btn-hollow:active {
+      background-color: rgba(248, 246, 225, 0.15) !important;
+      transform: translateY(4px);
     }
   </style>
 </head>
@@ -149,30 +163,23 @@
   </header>
   
   <main class="grid-container">
-    <!-- Row 1: Full-Width Callout -->
-    <a href="https://mtolivemke.churchcenter.com/people/forms/1306171" class="kiosk-btn btn-large">
-      <span>NEW HERE?</span>
-      <div class="btn-subtext">CONNECT WITH US</div>
+    <!-- Row 1: Full-Width Primary Callout -->
+    <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-large">
+      <span>SIGN UP FOR EVENTS</span>
     </a>
     
     <!-- Row 2: Two Columns -->
-    <a href="intent:#Intent;launchFlags=0x10000000;component=com.ministrycentered.checkins/com.ministrycentered.checkins.CheckInsActivity;end" class="kiosk-btn btn-standard">
-      <span>CHECK IN</span>
-      <div class="btn-subtext">TO WORSHIP</div>
+    <a href="https://mtolivemke.churchcenter.com/people/forms/130617" class="kiosk-btn btn-standard">
+      <span>NEW HERE?</span>
     </a>
     
-    <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-standard">
-      <span>SIGN UP</span>
-      <div class="btn-subtext">FOR EVENTS</div>
-    </a>
-    
-    <!-- Row 3: Two Columns -->
     <a href="https://mtolivemke.churchcenter.com/me/profile-and-household" class="kiosk-btn btn-standard">
       <span>UPDATE PROFILE</span>
     </a>
     
-    <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-standard">
-      <span>CHURCH CENTER</span>
+    <!-- Row 3: Hollow, Scaled-Down Bottom Anchor Button -->
+    <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-utility btn-hollow">
+      <span>MORE ON CHURCH CENTER</span>
     </a>
   </main>
 
