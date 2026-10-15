@@ -197,10 +197,10 @@
   <!-- Fully Kiosk Integration Script -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // Wait exactly 60 seconds (60000ms) before forcing the screensaver off
+      // Wait exactly 60 seconds (60000ms) of page idle time, then force-reload the homepage start URL
       setTimeout(() => {
-        if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
-          fully.stopScreensaver();
+        if (typeof fully !== 'undefined' && typeof fully.loadStartUrl === 'function') {
+          fully.loadStartUrl();
         }
       }, 60000);
     });
