@@ -217,14 +217,16 @@
       }
     }, { passive: false });
 
-    // CUSTOMER SERVICE FIX: Forcefully drop the screensaver banner immediately on loading
+    // CUSTOMER SERVICE TIMEOUT FIX: Applies a short 250ms delay so Fully Kiosk can complete its reload cycle before clearing the screensaver
     function dismissScreensaverOnLoad() {
-      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
-        fully.stopScreensaver();
-      }
+      setTimeout(() => {
+        if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+          fully.stopScreensaver();
+        }
+      }, 250);
     }
 
-    // Run the execution check right away or wait for hardware bridge assignment
+    // Run the execution check when ready or bind to the initialization hook
     if (typeof fully !== 'undefined') {
       dismissScreensaverOnLoad();
     } else {
