@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>KIOSK</title>
-  
+ 
   <!-- Fonts -->
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
   <link href="https://googleapis.com" rel="stylesheet">
-  
+ 
   <style>
     * {
       box-sizing: border-box;
@@ -19,7 +19,7 @@
       user-select: none;
       text-transform: uppercase;
     }
-    
+   
     /* HARD LAYOUT BOUNDARY LOCKDOWN */
     html, body {
       width: 100vw;
@@ -32,7 +32,7 @@
       overscroll-behavior-x: none !important;
       overscroll-behavior-y: none !important;
     }
-    
+   
     body {
       background-color: #164734;
       color: #f8f6e1;
@@ -42,7 +42,7 @@
       justify-content: flex-start;
       padding-bottom: 32px;
     }
-    
+   
     /* Header Branding */
     .header {
       width: 100%;
@@ -52,7 +52,7 @@
       align-items: center;
       position: relative;
     }
-    
+   
     .brand-header-banner {
       width: 100vw;
       height: 69.3vh;
@@ -63,7 +63,7 @@
       border-radius: 0;
       display: block;
     }
-    
+   
     .header-logo-overlay {
       position: absolute;
       top: 50%;
@@ -76,7 +76,7 @@
       z-index: 2;
       filter: drop-shadow(0 6px 12px rgba(0,0,0,.4));
     }
-    
+   
     .header::after {
       content: '';
       position: absolute;
@@ -88,7 +88,7 @@
       pointer-events: none;
       z-index: 1;
     }
-    
+   
     /* 2-Column Grid Container */
     .grid-container {
       width: 100%;
@@ -98,7 +98,7 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
-    
+   
     /* Main Kiosk Action Buttons */
     .kiosk-btn {
       font-family: 'Barlow Condensed', sans-serif;
@@ -120,29 +120,29 @@
       top: 0;
       padding: 12px;
     }
-    
+   
     .kiosk-btn:active {
       background-color: #e0ded0;
       border-color: #e0ded0;
       transform: translateY(8px);
       box-shadow: 0 4px 12px rgba(0,0,0,.2);
     }
-    
+   
     /* Primary Taller Layout Row */
     .btn-large {
       grid-column: span 2;
-      height: 210px; 
+      height: 210px;
       font-size: 3.8rem;
       letter-spacing: 1px;
     }
-    
+   
     /* Secondary Taller Layout Row */
     .btn-standard {
       height: 210px;
       font-size: 2.7rem;
       letter-spacing: 1px;
     }
-    
+   
     /* Cohesive Utility Row Anchor Layout */
     .btn-utility {
       grid-column: span 2;
@@ -151,7 +151,7 @@
       letter-spacing: 1px;
       box-shadow: 0 10px 20px rgba(0,0,0,.3);
     }
-    
+   
     /* Hollow Button Style Override */
     .btn-hollow {
       background-color: transparent !important;
@@ -163,7 +163,7 @@
       background-color: rgba(248, 246, 225, 0.15) !important;
       transform: translateY(4px);
     }
-    
+   
     /* Smaller nested row styling */
     .btn-subtext {
       font-size: 1.4rem;
@@ -181,30 +181,30 @@
     <img src="header-bg.png" alt="" class="brand-header-banner">
     <img src="logo.svg" alt="LOGO" class="header-logo-overlay">
   </header>
-  
+ 
   <main class="grid-container">
     <!-- Row 1: Full-Width Primary Callout -->
     <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-large">
       <span>SIGN UP</span>
       <div class="btn-subtext">FOR EVENTS</div>
     </a>
-    
+   
     <!-- Row 2: Two Columns -->
     <a href="https://mtolivemke.churchcenter.com/people/forms/1306171" class="kiosk-btn btn-standard">
       <span>NEW HERE?</span>
     </a>
-    
+   
     <a href="https://mtolivemke.churchcenter.com/me/profile-and-household" class="kiosk-btn btn-standard">
       <span>UPDATE PROFILE</span>
     </a>
-    
+   
     <!-- Row 3: Hollow, Scaled-Down Bottom Anchor Button -->
     <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-utility btn-hollow">
       <span>MORE ON CHURCH CENTER</span>
     </a>
   </main>
 
-  <!-- Complete Web-Controlled Automation Script -->
+  <!-- Fully Kiosk Integration & Absolute Lockdown Script -->
   <script>
     // HARD GESTURE LOCKDOWN: Keeps layout 100% rigid against finger drags
     window.addEventListener('touchmove', (e) => {
@@ -217,66 +217,24 @@
       }
     }, { passive: false });
 
-    // AUTONOMOUS CODED TIMING CONTROL
-    let idleTimer = null;
-    let screensaverActive = false;
-
-    function resetIdleTimer() {
-      // If the screensaver is running and someone touches the screen, wake it up immediately
-      if (screensaverActive) {
-        screensaverActive = false;
-        if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
-          fully.stopScreensaver();
-        }
-      }
-
-      clearTimeout(idleTimer);
-      
-      // Start counting 45 seconds of idle inactivity
-      idleTimer = setTimeout(triggerScreensaverCycle, 45000);
-    }
-
-    function triggerScreensaverCycle() {
-      if (typeof fully !== 'undefined') {
-        const currentUrl = fully.getCurrentUrl();
-        const startUrl = fully.getStartUrl();
-
-        // BLOCK ON START URL: If we are on the home menu, don't show the screensaver. Just sit here.
-        if (currentUrl === startUrl || currentUrl.includes('index.html')) {
-          return; 
-        }
-
-        // ALLOW ON CHILD PAGES: Run screensaver for exactly 15 seconds, then drop back to start URL
-        screensaverActive = true;
-        if (typeof fully.startScreensaver === 'function') {
-          fully.startScreensaver();
-        }
-
-        setTimeout(() => {
-          if (screensaverActive) {
-            screensaverActive = false;
-            if (typeof fully.stopScreensaver === 'function') {
-              fully.stopScreensaver();
-            }
-            if (typeof fully.loadStartUrl === 'function') {
-              fully.loadStartUrl();
-            }
-          }
-        }, 15000); // 15-second exact display rule
-      }
-    }
-
-    // Capture every touch interaction anywhere on the screen to reset our timers
-    window.addEventListener('touchstart', resetIdleTimer, true);
-    window.addEventListener('click', resetIdleTimer, true);
-
-    function initKioskControl() {
+    // CUSTOMER SUPPORT CORE EXECUTION: Forces screensaver clear immediately upon initialization
+    function clearScreensaverState() {
       if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
         fully.stopScreensaver();
       }
-      resetIdleTimer();
     }
 
+    function initKioskControl() {
+      // Clear screensaver blanket instantly on launch or reload
+      clearScreensaverState();
+
+      // HARDWARE TIMEOUT BIND: Triggers support's API method exactly when the canvas appears
+      if (typeof fully !== 'undefined' && typeof fully.bind === 'function') {
+        fully.bind('onScreensaverStart', 'fully.stopScreensaver();');
+      }
+    }
+
+    // Run when the app bridge finishes binding
     if (typeof fully !== 'undefined') {
       initKioskControl();
     } else {
