@@ -228,9 +228,9 @@
       // Clear screensaver blanket instantly on launch or reload
       clearScreensaverState();
 
-      // HARDWARE TIMEOUT BIND: Triggers support's API method exactly when the canvas appears
+      // HARDWARE TIMEOUT BIND: Uses native app strings to handle timing and page location constraints
       if (typeof fully !== 'undefined' && typeof fully.bind === 'function') {
-        fully.bind('onScreensaverStart', 'fully.stopScreensaver();');
+        fully.bind('onScreensaverStart', 'if(fully.getCurrentUrl() === fully.getStartUrl()){ fully.stopScreensaver(); } else { setTimeout(function(){ fully.stopScreensaver(); fully.loadStartUrl(); }, 15000); }');
       }
     }
 
