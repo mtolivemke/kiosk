@@ -217,20 +217,34 @@
       }
     }, { passive: false });
 
-    // CUSTOMER SUPPORT CORE EXECUTION: Forces screensaver clear immediately upon initialization
-    function clearScreensaverState() {
-      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
-        fully.stopScreensaver();
+    // Global variable to keep track of active countdown
+    let screensaverTimer = null;
+
+    // This function automatically gets called by the Fully Kiosk system when screensaver displays
+    function onScreensaverStart() {
+      // Clear any leftover timer just in case
+      if (screensaverTimer) clearTimeout(screensaverTimer);
+
+      // Set a strict 15-second countdown (15000 milliseconds)
+      screensaverTimer = setTimeout(() => {
+        if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+          fully.stopScreensaver();
+        }
+      }, 15000); 
+    }
+
+    // Reset timer tracking if someone physically wakes up the screen early by touching it
+    function onScreensaverStop() {
+      if (screensaverTimer) {
+        clearTimeout(screensaverTimer);
+        screensaverTimer = null;
       }
     }
 
     function initKioskControl() {
-      // Clear screensaver blanket instantly on launch or reload
-      clearScreensaverState();
-
-      // HARDWARE TIMEOUT BIND: Triggers support's API method exactly when the canvas appears
-      if (typeof fully !== 'undefined' && typeof fully.bind === 'function') {
-        fully.bind('onScreensaverStart', 'fully.stopScreensaver();');
+      // Clear any initial state on load
+      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+        fully.stopScreensaver();
       }
     }
 
