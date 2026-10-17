@@ -184,29 +184,29 @@
   
   <main class="grid-container">
     <!-- Row 1: Full-Width Primary Callout -->
-    <a href="https://mtolivemke.churchcenter.com/calendar?category=Church" class="kiosk-btn btn-large">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-large">
       <span>SIGN UP</span>
       <div class="btn-subtext">FOR EVENTS</div>
     </a>
     
     <!-- Row 2: Two Columns -->
-    <a href="https://mtolivemke.churchcenter.com/people/forms/1306171" class="kiosk-btn btn-standard">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
       <span>NEW HERE?</span>
     </a>
     
-    <a href="https://mtolivemke.churchcenter.com/me/profile-and-household" class="kiosk-btn btn-standard">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-standard">
       <span>UPDATE PROFILE</span>
     </a>
     
     <!-- Row 3: Hollow, Scaled-Down Bottom Anchor Button -->
-    <a href="https://mtolivemke.churchcenter.com/" class="kiosk-btn btn-utility btn-hollow">
+    <a href="https://churchcenter.com" class="kiosk-btn btn-utility btn-hollow">
       <span>MORE ON CHURCH CENTER</span>
     </a>
   </main>
 
-  <!-- Clean UI Touch Lockdown Script -->
+  <!-- Fully Kiosk Integration & Absolute Lockdown Script -->
   <script>
-    // TOTAL GESTURE MUTING: Stops screen stretching/bouncing entirely
+    // HARD GESTURE LOCKDOWN: Keeps layout 100% rigid against finger drags
     window.addEventListener('touchmove', (e) => {
       e.preventDefault();
     }, { passive: false });
@@ -216,6 +216,30 @@
         e.preventDefault();
       }
     }, { passive: false });
+
+    // CUSTOMER SUPPORT CORE EXECUTION: Forces screensaver clear immediately upon initialization
+    function clearScreensaverState() {
+      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+        fully.stopScreensaver();
+      }
+    }
+
+    function initKioskControl() {
+      // Clear screensaver blanket instantly on launch or reload
+      clearScreensaverState();
+
+      // HARDWARE TIMEOUT BIND: Triggers support's API method exactly when the canvas appears
+      if (typeof fully !== 'undefined' && typeof fully.bind === 'function') {
+        fully.bind('onScreensaverStart', 'fully.stopScreensaver();');
+      }
+    }
+
+    // Run when the app bridge finishes binding
+    if (typeof fully !== 'undefined') {
+      initKioskControl();
+    } else {
+      window.addEventListener('onFullyStarted', initKioskControl);
+    }
   </script>
 
 </body>
