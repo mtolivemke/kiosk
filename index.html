@@ -217,10 +217,36 @@
       }
     }, { passive: false });
 
-    // Clean up hardware state immediately when the main page loads/returns
+    let screensaverTimeout = null;
+
+    // Handles smart screensaver suppression and accurate 15s dismissal cycle
+    function handleScreensaverEvent() {
+      if (typeof fully !== 'undefined') {
+        const currentUrl = fully.getCurrentUrl();
+        const startUrl = fully.getStartUrl();
+
+        // 1. If we are on the Home Start URL, block screensaver entirely
+        if (currentUrl === startUrl) {
+          fully.stopScreensaver();
+          return;
+        }
+
+        // 2. If we are on a form or sub-page, let it display for exactly 15 seconds, then return home
+        if (screensaverTimeout) clearTimeout(screensaverTimeout);
+        
+        screensaverTimeout = setTimeout(() => {
+          fully.stopScreensaver();
+          fully.loadStartUrl(); // Forces browser view straight back to your clean home screen layout
+        }, 15000);
+      }
+    }
+
     function initKioskControl() {
-      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+      if (typeof fully !== 'undefined') {
         fully.stopScreensaver();
+        
+        // Listen to hardware screensaver events natively
+        fully.bind('onScreensaverStart', 'handleScreensaverEvent();');
       }
     }
 
