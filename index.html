@@ -204,7 +204,7 @@
     </a>
   </main>
 
-  <!-- Fully Kiosk Integration & Absolute Lockdown Script -->
+  <!-- Fully Kiosk Integration Script -->
   <script>
     // HARD GESTURE LOCKDOWN: Keeps layout 100% rigid against finger drags
     window.addEventListener('touchmove', (e) => {
@@ -217,38 +217,13 @@
       }
     }, { passive: false });
 
-    // Global variable to keep track of active countdown
-    let screensaverTimer = null;
-
-    // This function automatically gets called by the Fully Kiosk system when screensaver displays
-    function onScreensaverStart() {
-      // Clear any leftover timer just in case
-      if (screensaverTimer) clearTimeout(screensaverTimer);
-
-      // Set a strict 15-second countdown (15000 milliseconds)
-      screensaverTimer = setTimeout(() => {
-        if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
-          fully.stopScreensaver();
-        }
-      }, 15000); 
-    }
-
-    // Reset timer tracking if someone physically wakes up the screen early by touching it
-    function onScreensaverStop() {
-      if (screensaverTimer) {
-        clearTimeout(screensaverTimer);
-        screensaverTimer = null;
-      }
-    }
-
+    // Clean up hardware state immediately when the main page loads/returns
     function initKioskControl() {
-      // Clear any initial state on load
       if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
         fully.stopScreensaver();
       }
     }
 
-    // Run when the app bridge finishes binding
     if (typeof fully !== 'undefined') {
       initKioskControl();
     } else {
