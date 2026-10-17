@@ -204,7 +204,7 @@
     </a>
   </main>
 
-  <!-- Fully Kiosk Integration Script -->
+  <!-- Complete Web-Controlled Automation Script -->
   <script>
     // HARD GESTURE LOCKDOWN: Keeps layout 100% rigid against finger drags
     window.addEventListener('touchmove', (e) => {
@@ -217,37 +217,64 @@
       }
     }, { passive: false });
 
-    let screensaverTimeout = null;
+    // AUTONOMOUS CODED TIMING CONTROL
+    let idleTimer = null;
+    let screensaverActive = false;
 
-    // Handles smart screensaver suppression and accurate 15s dismissal cycle
-    function handleScreensaverEvent() {
+    function resetIdleTimer() {
+      // If the screensaver is running and someone touches the screen, wake it up immediately
+      if (screensaverActive) {
+        screensaverActive = false;
+        if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
+          fully.stopScreensaver();
+        }
+      }
+
+      clearTimeout(idleTimer);
+      
+      // Start counting 45 seconds of idle inactivity
+      idleTimer = setTimeout(triggerScreensaverCycle, 45000);
+    }
+
+    function triggerScreensaverCycle() {
       if (typeof fully !== 'undefined') {
         const currentUrl = fully.getCurrentUrl();
         const startUrl = fully.getStartUrl();
 
-        // 1. If we are on the Home Start URL, block screensaver entirely
-        if (currentUrl === startUrl) {
-          fully.stopScreensaver();
-          return;
+        // BLOCK ON START URL: If we are on the home menu, don't show the screensaver. Just sit here.
+        if (currentUrl === startUrl || currentUrl.includes('index.html')) {
+          return; 
         }
 
-        // 2. If we are on a form or sub-page, let it display for exactly 15 seconds, then return home
-        if (screensaverTimeout) clearTimeout(screensaverTimeout);
-        
-        screensaverTimeout = setTimeout(() => {
-          fully.stopScreensaver();
-          fully.loadStartUrl(); // Forces browser view straight back to your clean home screen layout
-        }, 15000);
+        // ALLOW ON CHILD PAGES: Run screensaver for exactly 15 seconds, then drop back to start URL
+        screensaverActive = true;
+        if (typeof fully.startScreensaver === 'function') {
+          fully.startScreensaver();
+        }
+
+        setTimeout(() => {
+          if (screensaverActive) {
+            screensaverActive = false;
+            if (typeof fully.stopScreensaver === 'function') {
+              fully.stopScreensaver();
+            }
+            if (typeof fully.loadStartUrl === 'function') {
+              fully.loadStartUrl();
+            }
+          }
+        }, 15000); // 15-second exact display rule
       }
     }
 
+    // Capture every touch interaction anywhere on the screen to reset our timers
+    window.addEventListener('touchstart', resetIdleTimer, true);
+    window.addEventListener('click', resetIdleTimer, true);
+
     function initKioskControl() {
-      if (typeof fully !== 'undefined') {
+      if (typeof fully !== 'undefined' && typeof fully.stopScreensaver === 'function') {
         fully.stopScreensaver();
-        
-        // Listen to hardware screensaver events natively
-        fully.bind('onScreensaverStart', 'handleScreensaverEvent();');
       }
+      resetIdleTimer();
     }
 
     if (typeof fully !== 'undefined') {
